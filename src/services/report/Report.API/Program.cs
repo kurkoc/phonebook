@@ -18,8 +18,9 @@ builder.Services.AddDbContext<IDataContext, ReportContext>(options =>
 });
 builder.Services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
 builder.Services.AddScoped<IUnitOfWork,UnitOfWork>();
-
 builder.Services.AddScoped<IReportService,ReportService>();
+
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 var app = builder.Build();
 
