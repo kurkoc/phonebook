@@ -24,10 +24,17 @@ namespace Report.API.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllRequests(CancellationToken cancellationToken)
+        public async Task<IActionResult> GetAllReports(CancellationToken cancellationToken)
         {
             var reports = await _reportService.GetAllReports(cancellationToken);
             return Ok(reports);
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetAllReports(Guid id,CancellationToken cancellationToken)
+        {
+            var report = await _reportService.GetReportById(id,cancellationToken);
+            return Ok(report);
         }
 
         [HttpPost]
