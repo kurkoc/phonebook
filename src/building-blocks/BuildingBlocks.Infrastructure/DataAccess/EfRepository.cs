@@ -1,6 +1,5 @@
 ﻿using BuildingBlocks.Domain;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
 
 namespace BuildingBlocks.Infrastructure.DataAccess
 {

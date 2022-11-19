@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using RabbitMQ.Client;
 using Report.API.Application;
+using System.Text;
 
 namespace Report.API.Controllers
 {
@@ -15,11 +17,17 @@ namespace Report.API.Controllers
             _reportService = reportService;
         }
 
-        [HttpGet]
-        [Route("test")]
+        [HttpGet("test")]
         public IActionResult Test()
         {
             return Ok("it works! hello from reports service");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAllRequests(CancellationToken cancellationToken)
+        {
+            var reports = await _reportService.GetAllReports(cancellationToken);
+            return Ok(reports);
         }
 
         [HttpPost]
