@@ -29,5 +29,15 @@ namespace Report.API.Application
             var mappedReports = _mapper.Map<List<ns.Report>, List<ReportListDto>>(reports);
             return mappedReports;
         }
+
+        public async Task<ReportListDto> GetReportById(Guid id, CancellationToken cancellationToken)
+        {
+            var report = await _repository.GetById(id,cancellationToken);
+            if (report == null)
+                throw new BusinessRuleException("Rapor bulunamadı");
+
+            var mappedReport = _mapper.Map<ns.Report, ReportListDto>(report);
+            return mappedReport;
+        }
     }
 }
