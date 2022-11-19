@@ -1,0 +1,7 @@
+--contact api
+dotnet ef migrations add "init-database" --project "src\services\contact\Contact.Infrastructure" --startup-project "src\services\contact\Contact.Infrastructure" --output-dir "DataAccess\Migrations"
+dotnet ef database update --project "src\services\contact\Contact.Infrastructure" --startup-project "src\services\contact\Contact.Infrastructure"
+
+--report api
+dotnet ef migrations add "init-database" --project "src\services\report\Report.API" --startup-project "src\services\report\Report.API" --output-dir "Infrastructure\DataAccess\Migrations"
+dotnet ef database update --project "src\services\report\Report.API" --startup-project "src\services\report\Report.API"

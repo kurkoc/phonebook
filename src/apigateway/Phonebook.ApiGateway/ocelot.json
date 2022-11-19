@@ -1,0 +1,31 @@
+{
+  "GlobalConfiguration": {
+    "BaseUrl": "https://localhost:7036"
+  },
+  "Routes": [
+    {
+      "UpstreamPathTemplate": "/persons/test",
+      "UpstreamHttpMethod": [ "Get" ],
+      "DownstreamPathTemplate": "/api/persons/test",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7038
+        }
+      ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/reports/test",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7083
+        }
+      ],
+      "UpstreamPathTemplate": "/reports/test",
+      "UpstreamHttpMethod": [ "Get" ]
+    }
+  ]
+}
