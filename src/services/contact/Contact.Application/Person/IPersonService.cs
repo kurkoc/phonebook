@@ -1,4 +1,6 @@
-﻿namespace Contact.Application.Person
+﻿using BuildingBlocks.Domain;
+
+namespace Contact.Application.Person
 {
     public interface IPersonService
     {
@@ -8,5 +10,6 @@
         Task<bool> RemovePerson(Guid id, CancellationToken cancellationToken);
         Task AddContactInfoToPerson(Guid id, PersonContactSaveDto personContactSaveDto, CancellationToken cancellationToken);
         Task RemoveContactInfoPerson(Guid id, Guid personContactInfoId, CancellationToken cancellationToken);
+        Task<List<ReportItemDto>> GetReportData();
     }
 }

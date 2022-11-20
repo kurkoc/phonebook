@@ -41,7 +41,7 @@ namespace Contact.API.Controllers
         public async Task<IActionResult> AddPerson([FromBody] PersonSaveDto personSaveDto, CancellationToken cancellationToken = default)
         {
             await _personService.AddPerson(personSaveDto, cancellationToken);
-            return CreatedAtAction("Get", 12);
+            return Ok();
         }
 
         [HttpDelete]
@@ -64,6 +64,13 @@ namespace Contact.API.Controllers
         {
             await _personService.RemoveContactInfoPerson(id, personContactId, cancellationToken);
             return Ok();
+        }
+
+        [HttpGet("GetReportData")]
+        public async Task<IActionResult> GetReportData()
+        {
+            var datas = await _personService.GetReportData();
+            return Ok(datas);
         }
 
     }

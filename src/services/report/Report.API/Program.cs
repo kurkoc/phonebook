@@ -1,5 +1,6 @@
 using BuildingBlocks.Domain;
 using BuildingBlocks.Infrastructure.DataAccess;
+using BuildingBlocks.Infrastructure.Serialization;
 using Microsoft.EntityFrameworkCore;
 using RabbitMQ.Client;
 using Report.API.Application;
@@ -14,6 +15,9 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddControllers();
+
+builder.Services.AddSingleton<ISerializer, Serializer>();
+
 
 string? connectionString = builder.Configuration.GetConnectionString("ReportConnectionString");
 if (connectionString == null) throw new ArgumentNullException("");

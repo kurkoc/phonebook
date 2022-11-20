@@ -5,22 +5,39 @@ using System.Text;
 using Report.API.Application;
 using System.Threading.Channels;
 using Report.API.RabbitMq.Configuration;
+using BuildingBlocks.Domain;
+using System.Text.Json;
+using Report.API.Infrastructure.Excel;
+using BuildingBlocks.Infrastructure.Serialization;
 
 namespace Report.API.BackgroundServices
 {
     public class ReportGeneratorBackgroundService : BackgroundService
     {
+        private readonly IWebHostEnvironment _env;
+        private readonly ISerializer _serializer;
         private readonly ConnectionFactory _connectionFactory;
         private IConnection _connection;
         private IModel _channel;
         private readonly IServiceProvider _serviceProvider;
         private readonly RabbitMqConfiguration _rabbitMqConfiguration;
+        private readonly IHttpClientFactory _httpClientFactory;
+        private readonly HttpClient _client;
 
-        public ReportGeneratorBackgroundService(IServiceProvider serviceProvider, ConnectionFactory connectionFactory,RabbitMqConfiguration rabbitMqConfiguration)
+        public ReportGeneratorBackgroundService(IServiceProvider serviceProvider,
+                                                ConnectionFactory connectionFactory,
+                                                RabbitMqConfiguration rabbitMqConfiguration,
+                                                IHttpClientFactory httpClientFactory,
+                                                IWebHostEnvironment env,
+                                                ISerializer serializer)
         {
             _serviceProvider = serviceProvider;
             _rabbitMqConfiguration = rabbitMqConfiguration;
             _connectionFactory = connectionFactory;
+            _httpClientFactory = httpClientFactory;
+            _client = _httpClientFactory.CreateClient("ContactApi");
+            _env = env;
+            _serializer = serializer;
         }
 
         public override Task StartAsync(CancellationToken cancellationToken)
@@ -74,7 +91,12 @@ namespace Report.API.BackgroundServices
             var message = Encoding.UTF8.GetString(@event.Body.ToArray());
             try
             {
-                Console.WriteLine(message);
+                string reportJson = await _client.GetStringAsync("/api/persons/GetReportData");
+                List<ReportItemDto> reportData = _serializer.Deserialize<List<ReportItemDto>>(reportJson);
+                var fileArray = ExcelHelper.GenerateExcel(reportData);
+                string filePath = Path.Combine(_env.ContentRootPath, "Reports",Guid.NewGuid() + ".xlsx");
+                File.WriteAllBytes(filePath, fileArray);
+
                 _channel.BasicAck(@event.DeliveryTag, false);
             }
             catch (Exception ex)
