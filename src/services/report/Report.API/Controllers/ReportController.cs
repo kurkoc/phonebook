@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using BuildingBlocks.Domain;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using RabbitMQ.Client;
 using Report.API.Application;
+using Report.API.Infrastructure.Excel;
 using Report.API.RabbitMq;
 using Report.API.RabbitMq.Events;
 using System.Text;
@@ -46,6 +48,19 @@ namespace Report.API.Controllers
         {
             RequestReportEvent @event = new RequestReportEvent();
             _producer.Publish(@event);
+            return Ok();
+        }
+
+        [HttpGet("excel")]
+        public IActionResult SaveExcel()
+        {
+            List<ReportItemDto> reportItems = new List<ReportItemDto>()
+            {
+                new ReportItemDto { LocationName = "Ankara", PersonCount = 4, PhoneCount = 5},
+                new ReportItemDto { LocationName = "İstanbul", PersonCount = 2, PhoneCount = 2},
+                new ReportItemDto { LocationName = "İzmir", PersonCount = 3, PhoneCount = 3},
+            };
+            ExcelHelper.GenerateExcel(reportItems);
             return Ok();
         }
     }

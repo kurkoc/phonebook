@@ -76,5 +76,18 @@ namespace Contact.Application.Person
             await _uow.SaveChangesAsync(cancellationToken);
         }
 
+        public async Task<List<ReportItemDto>> GetReportData()
+        {
+            List<ReportItemDto> reportItems = new List<ReportItemDto>()
+            {
+                new ReportItemDto { LocationName = "Ankara", PersonCount = 4, PhoneCount = 5},
+                new ReportItemDto { LocationName = "İstanbul", PersonCount = 2, PhoneCount = 2},
+                new ReportItemDto { LocationName = "İzmir", PersonCount = 3, PhoneCount = 3},
+            };
+
+            await Task.CompletedTask;
+            return reportItems;
+        }
+
     }
 }
