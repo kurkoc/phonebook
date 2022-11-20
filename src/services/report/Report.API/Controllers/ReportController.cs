@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 using RabbitMQ.Client;
 using Report.API.Application;
+using Report.API.RabbitMq;
+using Report.API.RabbitMq.Events;
 using System.Text;
 
 namespace Report.API.Controllers
@@ -11,10 +13,12 @@ namespace Report.API.Controllers
     public class ReportController : ControllerBase
     {
         private readonly IReportService _reportService;
+        private readonly IRabbitMqProducer<RequestReportEvent> _producer;
 
-        public ReportController(IReportService reportService)
+        public ReportController(IReportService reportService, IRabbitMqProducer<RequestReportEvent> producer)
         {
             _reportService = reportService;
+            _producer = producer;
         }
 
         [HttpGet("test")]
@@ -40,7 +44,8 @@ namespace Report.API.Controllers
         [HttpPost]
         public async Task<IActionResult> RequestReport(CancellationToken cancellationToken)
         {
-            await _reportService.RequestReport(cancellationToken);
+            RequestReportEvent @event = new RequestReportEvent();
+            _producer.Publish(@event);
             return Ok();
         }
     }

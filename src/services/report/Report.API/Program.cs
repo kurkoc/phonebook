@@ -1,8 +1,13 @@
 using BuildingBlocks.Domain;
 using BuildingBlocks.Infrastructure.DataAccess;
 using Microsoft.EntityFrameworkCore;
+using RabbitMQ.Client;
 using Report.API.Application;
+using Report.API.BackgroundServices;
 using Report.API.Infrastructure.DataAccess.Context;
+using Report.API.RabbitMq;
+using Report.API.RabbitMq.Configuration;
+using Report.API.RabbitMq.Events;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,10 +22,28 @@ builder.Services.AddDbContext<IDataContext, ReportContext>(options =>
     options.UseNpgsql(connectionString);
 });
 builder.Services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
-builder.Services.AddScoped<IUnitOfWork,UnitOfWork>();
-builder.Services.AddScoped<IReportService,ReportService>();
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddScoped<IReportService, ReportService>();
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+builder.Services.AddHostedService<ReportGeneratorBackgroundService>();
+
+var aaa = builder.Configuration.GetValue<RabbitMqConfiguration>("RabbitMq");
+
+RabbitMqConfiguration rabbitMqConfiguration = new();
+builder.Configuration.Bind("RabbitMq", rabbitMqConfiguration);
+builder.Services.AddSingleton(rabbitMqConfiguration);
+builder.Services.AddSingleton<ConnectionFactory>(provider =>
+{
+    return new ConnectionFactory() { HostName = rabbitMqConfiguration.Url, DispatchConsumersAsync = true };
+});
+builder.Services.AddSingleton<IRabbitMqProducer<RequestReportEvent>, RequestReportProducer>();
+
+builder.Services.AddHttpClient("ContactApi", client =>
+{
+    string baseUrl = builder.Configuration["ContactApi:BaseUrl"];
+    client.BaseAddress = new Uri(baseUrl);
+});
 
 var app = builder.Build();
 
