@@ -6,6 +6,7 @@ using RabbitMQ.Client;
 using Report.API.Application;
 using Report.API.BackgroundServices;
 using Report.API.Infrastructure.DataAccess.Context;
+using Report.API.Infrastructure.DataAccess.Seeder;
 using Report.API.RabbitMq;
 using Report.API.RabbitMq.Configuration;
 using Report.API.RabbitMq.Events;
@@ -32,14 +33,12 @@ builder.Services.AddScoped<IReportService, ReportService>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddHostedService<ReportGeneratorBackgroundService>();
 
-var aaa = builder.Configuration.GetValue<RabbitMqConfiguration>("RabbitMq");
-
 RabbitMqConfiguration rabbitMqConfiguration = new();
 builder.Configuration.Bind("RabbitMq", rabbitMqConfiguration);
 builder.Services.AddSingleton(rabbitMqConfiguration);
 builder.Services.AddSingleton<ConnectionFactory>(provider =>
 {
-    return new ConnectionFactory() { HostName = rabbitMqConfiguration.Url, DispatchConsumersAsync = true };
+    return new ConnectionFactory() { HostName = rabbitMqConfiguration.Url,Port = rabbitMqConfiguration.Port, DispatchConsumersAsync = true };
 });
 builder.Services.AddSingleton<IRabbitMqProducer<RequestReportEvent>, RequestReportProducer>();
 
@@ -59,4 +58,5 @@ app.UseAuthorization();
 
 app.MapControllers();
 
+app.Seed();
 app.Run();

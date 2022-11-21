@@ -102,9 +102,10 @@ namespace Report.API.BackgroundServices
                 string reportJson = await _client.GetStringAsync("/api/persons/GetReportData");
                 List<ReportItemDto> reportData = _serializer.Deserialize<List<ReportItemDto>>(reportJson);
                 var fileArray = ExcelHelper.GenerateExcel(reportData);
-                string filePath = Path.Combine(_env.ContentRootPath, "Reports", Guid.NewGuid() + ".xlsx");
+                string fileName = $"{Guid.NewGuid()}.xlsx";
+                string filePath = Path.Combine(_env.ContentRootPath, "Reports", fileName);
                 File.WriteAllBytes(filePath, fileArray);
-                await _reportService.SetReportPath(requestReportEvent.Id, filePath, default);
+                await _reportService.SetReportPath(requestReportEvent.Id, fileName, default);
                 _channel.BasicAck(@event.DeliveryTag, false);
             }
             catch (Exception ex)
