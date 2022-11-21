@@ -1,4 +1,5 @@
 ﻿using BuildingBlocks.Domain;
+using System.Threading;
 
 namespace Contact.Application.Person
 {
@@ -10,6 +11,6 @@ namespace Contact.Application.Person
         Task<bool> RemovePerson(Guid id, CancellationToken cancellationToken);
         Task AddContactInfoToPerson(Guid id, PersonContactSaveDto personContactSaveDto, CancellationToken cancellationToken);
         Task RemoveContactInfoPerson(Guid id, Guid personContactInfoId, CancellationToken cancellationToken);
-        Task<List<ReportItemDto>> GetReportData();
+        Task<List<ReportItemDto>> GetReportData(CancellationToken cancellationToken);
     }
 }

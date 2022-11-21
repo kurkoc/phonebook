@@ -67,9 +67,9 @@ namespace Contact.API.Controllers
         }
 
         [HttpGet("GetReportData")]
-        public async Task<IActionResult> GetReportData()
+        public async Task<IActionResult> GetReportData(CancellationToken cancellationToken = default)
         {
-            var datas = await _personService.GetReportData();
+            var datas = await _personService.GetReportData(cancellationToken);
             return Ok(datas);
         }
 

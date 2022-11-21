@@ -76,7 +76,7 @@ namespace Contact.Application.Person
             await _uow.SaveChangesAsync(cancellationToken);
         }
 
-        public async Task<List<ReportItemDto>> GetReportData()
+        public async Task<List<ReportItemDto>> GetReportData(CancellationToken cancellationToken)
         {
             //List<ReportItemDto> reportItems = new List<ReportItemDto>()
             //{
