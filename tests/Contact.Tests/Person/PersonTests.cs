@@ -1,4 +1,5 @@
-﻿using ns = Contact.Domain.AggregateRoot;
+﻿using AutoFixture;
+using ns = Contact.Domain.AggregateRoot;
 namespace Contact.Tests.Person
 {
     public class PersonTests
