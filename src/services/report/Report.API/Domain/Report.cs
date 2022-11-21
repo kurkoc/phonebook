@@ -8,6 +8,7 @@ namespace Report.API.Domain
         public Guid Id { get; private set; }
         public DateTime RequestDate { get; private set; }
         public ReportStatus Status { get; set; }
+        public string Path { get; set; }
         #endregion
 
         #region constructors
