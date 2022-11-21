@@ -16,9 +16,9 @@ namespace Report.API.Application
             _mapper = mapper;
         }
 
-        public async Task RequestReport(CancellationToken cancellationToken)
+        public async Task RequestReport(Guid id,DateTime requestDate, CancellationToken cancellationToken)
         {
-            ns.Report report = ns.Report.Create(Guid.NewGuid());
+            ns.Report report = ns.Report.Create(id,requestDate);
             _repository.Add(report);
             await _uow.SaveChangesAsync(cancellationToken);
         }
@@ -38,6 +38,14 @@ namespace Report.API.Application
 
             var mappedReport = _mapper.Map<ns.Report, ReportListDto>(report);
             return mappedReport;
+        }
+
+        public async Task SetReportPath(Guid id, string path, CancellationToken cancellationToken)
+        {
+            ns.Report? report = await _repository.GetById(id, cancellationToken);
+            report.SetFilePath(path);
+
+            await _uow.SaveChangesAsync(cancellationToken);
         }
     }
 }

@@ -15,21 +15,22 @@ namespace Report.API.Domain
         private Report()
         { }
 
-        private Report(Guid id)
+        private Report(Guid id, DateTime requestDate)
         {
             Id = id;
-            RequestDate = DateTime.UtcNow;
+            RequestDate = requestDate;
             Status = ReportStatus.Processing;
         }
         #endregion
 
         #region creations
-        public static Report Create(Guid id) => new Report(id);
+        public static Report Create(Guid id, DateTime requestDate) => new Report(id,requestDate);
         #endregion
 
         #region behaviours
-        public void SetStatusCompleted()
+        public void SetFilePath(string path)
         {
+            Path = path;
             Status = ReportStatus.Completed;
         }
         #endregion
