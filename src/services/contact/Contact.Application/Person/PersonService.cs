@@ -78,12 +78,27 @@ namespace Contact.Application.Person
 
         public async Task<List<ReportItemDto>> GetReportData()
         {
-            List<ReportItemDto> reportItems = new List<ReportItemDto>()
-            {
-                new ReportItemDto { LocationName = "Ankara", PersonCount = 4, PhoneCount = 5},
-                new ReportItemDto { LocationName = "İstanbul", PersonCount = 2, PhoneCount = 2},
-                new ReportItemDto { LocationName = "İzmir", PersonCount = 3, PhoneCount = 3},
-            };
+            //List<ReportItemDto> reportItems = new List<ReportItemDto>()
+            //{
+            //    new ReportItemDto { LocationName = "Ankara", PersonCount = 4, PhoneCount = 5},
+            //    new ReportItemDto { LocationName = "İstanbul", PersonCount = 2, PhoneCount = 2},
+            //    new ReportItemDto { LocationName = "İzmir", PersonCount = 3, PhoneCount = 3},
+            //};
+
+            var reportItems = _personRepository.Query()
+                .Include(fz => fz.Contacts).Where(fz => fz.Contacts.Any(fza => fza.TypeId == ContactTypes.Location))
+                .SelectMany(fz => fz.Contacts, (p, pc) => new
+                {
+                    PersonId = p.Id,
+                    PersonContact = pc.TypeId,
+                    Location = p.Contacts.Where(fz => fz.TypeId == ContactTypes.Location).FirstOrDefault().Value
+                }).ToList().GroupBy(fz => fz.Location).ToLookup(fz => fz.Key, fz => fz.ToList())
+                .Select(fz => new ReportItemDto
+                {
+                    LocationName = fz.Key,
+                    PersonCount = fz.SelectMany(fza => fza.GroupBy(fzaa => fzaa.PersonId)).Count(),
+                    PhoneCount = fz.Sum(fza => fza.Count(fzaa => fzaa.PersonContact == ContactTypes.Phone))
+                }).ToList();
 
             await Task.CompletedTask;
             return reportItems;
