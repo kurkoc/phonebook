@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Contact.Infrastructure.DataAccess.Seeder;
+using Microsoft.EntityFrameworkCore;
 
 namespace Contact.Infrastructure.DataAccess.Context
 {

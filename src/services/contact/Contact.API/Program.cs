@@ -1,5 +1,6 @@
 using Contact.Application.Person;
 using Contact.Infrastructure;
+using Contact.Infrastructure.DataAccess.Seeder;
 using FluentValidation;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -27,5 +28,7 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.Seed();
 
 app.Run();
