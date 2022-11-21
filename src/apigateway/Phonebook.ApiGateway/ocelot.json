@@ -4,9 +4,8 @@
   },
   "Routes": [
     {
-      "UpstreamPathTemplate": "/persons/test",
-      "UpstreamHttpMethod": [ "Get" ],
-      "DownstreamPathTemplate": "/api/persons/test",
+      "UpstreamPathTemplate": "/persons",
+      "DownstreamPathTemplate": "/api/persons",
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
@@ -16,16 +15,37 @@
       ]
     },
     {
-      "DownstreamPathTemplate": "/api/reports/test",
+      "UpstreamPathTemplate": "/persons/{everything}",
+      "DownstreamPathTemplate": "/api/persons/{everything}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7038
+        }
+      ]
+    },
+    {
+      "UpstreamPathTemplate": "/reports/",
+      "DownstreamPathTemplate": "/api/reports",
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
           "Port": 7083
         }
-      ],
-      "UpstreamPathTemplate": "/reports/test",
-      "UpstreamHttpMethod": [ "Get" ]
+      ]
+    },
+    {
+      "UpstreamPathTemplate": "/reports/{everything}",
+      "DownstreamPathTemplate": "/api/reports/{everything}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7083
+        }
+      ]
     }
   ]
 }
