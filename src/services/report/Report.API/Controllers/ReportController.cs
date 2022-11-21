@@ -21,7 +21,7 @@ namespace Report.API.Controllers
         [HttpGet("test")]
         public IActionResult Test()
         {
-            return Ok("it works! hello from reports service");
+            return Ok("report-it works!");
         }
 
         [HttpGet]

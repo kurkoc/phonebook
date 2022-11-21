@@ -16,11 +16,10 @@ namespace Contact.API.Controllers
         }
 
 
-        [HttpGet]
-        [Route("test")]
+        [HttpGet("test")]
         public IActionResult Test()
         {
-            return Ok("it works! hello from contacts service");
+            return Ok("person-it works!");
         }
 
         [HttpGet]
@@ -44,8 +43,7 @@ namespace Contact.API.Controllers
             return Ok();
         }
 
-        [HttpDelete]
-        [Route("{id}")]
+        [HttpDelete("{id}")] 
         public async Task<IActionResult> RemovePerson(Guid id, CancellationToken cancellationToken = default)
         {
             await _personService.RemovePerson(id, cancellationToken);

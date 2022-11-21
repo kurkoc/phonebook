@@ -4,6 +4,10 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 17.4.33103.184
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{F1D13682-E332-41B2-B4F6-11A622443C1D}"
+	ProjectSection(SolutionItems) = preProject
+		src\docker-compose.override.yml = src\docker-compose.override.yml
+		src\docker-compose.yml = src\docker-compose.yml
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{8E9DA124-64BC-4064-8203-61B4A2BA8903}"
 	ProjectSection(SolutionItems) = preProject
@@ -43,7 +47,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BuildingBlock.Application",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BuildingBlocks.Infrastructure", "src\building-blocks\BuildingBlocks.Infrastructure\BuildingBlocks.Infrastructure.csproj", "{C7D28C7E-2043-4F5A-A8E1-9114005C8C90}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Report.Tests", "tests\Report.Tests\Report.Tests.csproj", "{6449D73C-6B57-4861-B02C-25ADE3994930}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Report.Tests", "tests\Report.Tests\Report.Tests.csproj", "{6449D73C-6B57-4861-B02C-25ADE3994930}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

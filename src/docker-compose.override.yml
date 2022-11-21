@@ -1,0 +1,32 @@
+version: '3.8'
+services:
+  database:
+    container_name: pb-postgre
+    ports:
+      - 5432:5432
+    volumes:
+      - pb-postgre-volume:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=123456
+      - POSTGRES_DB=PB-ReportDb
+  rabbitmq:
+    container_name: pb-rabbitmq
+    ports:
+        - 5672:5672
+        - 15672:15672
+  contact-api:
+    image: contact-api-image
+    build: 
+      context: .
+      dockerfile: services/contact/Contact.API/Dockerfile
+    depends_on:
+      - database
+  report-api:
+    image: report-api-image
+    build: 
+      context: .
+      dockerfile: services/report/Report.API/Dockerfile
+    depends_on:
+      - rabbitmq
+      - database
