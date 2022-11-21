@@ -4,6 +4,11 @@ services:
     image: postgres
   rabbitmq:
     image: rabbitmq:3.11-management
+  gateway-api:
+    image: gateway-api-image
+    build: 
+      context: .
+      dockerfile: services/apigateway/Phonebook.ApiGateway/Dockerfile
   contact-api:
     image: contact-api-image
     build: 

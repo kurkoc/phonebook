@@ -15,6 +15,11 @@ services:
     ports:
         - 5672:5672
         - 15672:15672
+  gateway-api:
+   image: gateway-api-image
+   build: 
+      context: .
+      dockerfile: services/apigateway/Phonebook.ApiGateway/Dockerfile
   contact-api:
     image: contact-api-image
     build: 
