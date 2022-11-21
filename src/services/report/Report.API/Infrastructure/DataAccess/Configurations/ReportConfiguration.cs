@@ -18,6 +18,9 @@ namespace Report.API.Infrastructure.DataAccess.Configurations
 
             builder.Property(q => q.Status)
                 .IsRequired();
+
+            builder.Property(q => q.Path)
+                .IsRequired(false);
         }
     }
 }
