@@ -49,6 +49,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BuildingBlocks.Infrastructu
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Report.Tests", "tests\Report.Tests\Report.Tests.csproj", "{6449D73C-6B57-4861-B02C-25ADE3994930}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{EA7C6A74-3373-4860-85CF-C92F52B61CE8}"
+	ProjectSection(SolutionItems) = preProject
+		build\build.cake = build\build.cake
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
